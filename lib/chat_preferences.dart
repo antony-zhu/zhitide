@@ -15,21 +15,25 @@ enum DeepSeekModel {
 class ChatPreferences {
   const ChatPreferences({
     this.model = DeepSeekModel.flash,
+    this.taskModel = DeepSeekModel.flash,
     this.thinkingEnabled = false,
     this.showReasoning = true,
   });
 
   final DeepSeekModel model;
+  final DeepSeekModel taskModel;
   final bool thinkingEnabled;
   final bool showReasoning;
 
   ChatPreferences copyWith({
     DeepSeekModel? model,
+    DeepSeekModel? taskModel,
     bool? thinkingEnabled,
     bool? showReasoning,
   }) {
     return ChatPreferences(
       model: model ?? this.model,
+      taskModel: taskModel ?? this.taskModel,
       thinkingEnabled: thinkingEnabled ?? this.thinkingEnabled,
       showReasoning: showReasoning ?? this.showReasoning,
     );
@@ -52,6 +56,9 @@ class ChatPreferencesStore {
       model: saved['model'] == DeepSeekModel.pro.apiId
           ? DeepSeekModel.pro
           : DeepSeekModel.flash,
+      taskModel: saved['taskModel'] == DeepSeekModel.pro.apiId
+          ? DeepSeekModel.pro
+          : DeepSeekModel.flash,
       thinkingEnabled: saved['thinkingEnabled'] == true,
       showReasoning: saved['showReasoning'] != false,
     );
@@ -62,6 +69,7 @@ class ChatPreferencesStore {
       key: _key,
       value: jsonEncode({
         'model': preferences.model.apiId,
+        'taskModel': preferences.taskModel.apiId,
         'thinkingEnabled': preferences.thinkingEnabled,
         'showReasoning': preferences.showReasoning,
       }),
